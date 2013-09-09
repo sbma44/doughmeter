@@ -21,6 +21,9 @@ class YahooFantasyFootball(object):
 		b = BeautifulSoup(self.html)
 
 	def process(self):
+		if self.last_refresh is None:
+			raise Exception('Cannot process data prior to retrieving it (with refresh())')
+
 		scores = {}
 		matchups = []
 		b = BeautifulSoup(self.html)
@@ -36,6 +39,16 @@ class YahooFantasyFootball(object):
 
 		self.scores = scores
 		self.matchups = matchups
+
+		standings = []
+		cell_order = ('rank', 'name', 'record', 'points', 'streak', 'waiver', 'moves')
+		for row in select(b, 'table#standingstable tbody tr'):
+			record = {}
+			for (i, cell) in enumerate(select(row, 'td')):
+				record[cell_order[i]] = cell.getText()
+			standings.append(record)
+
+		self.standings = standings
 
 	def refresh(self):
 		
@@ -82,15 +95,31 @@ class YahooFantasyFootball(object):
 		self.html = self.phantom.page_source
 	
 
+	def get_score_differential(self, player):
+		opponent = None
+		for m in self.matchups:
+			for (i, p) in enumerate(m):
+				if p == player:
+					opponent = m[(i+1) % len(m)]		
+		
+		if opponent is None:
+			raise Exception('Could not find player in matchups')
+
+		return int(self.scores[player]['score']) - int(self.scores[opponent]['score'])
+
 
 if __name__ == '__main__':
 	y = YahooFantasyFootball(YAHOO_LEAGUE_URL)
 	y.refresh()	
 	y.process()
 
-	print y.scores
-	for m in y.matchups:
-		print m
+	# print y.scores
+	
+	# for m in y.matchups:
+	# 	print m
+
+	# for s in y.standings:
+	# 	print s
 
 
 	# f = open('output.html', 'w')
