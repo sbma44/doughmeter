@@ -15,10 +15,7 @@ class YahooFantasyFootball(object):
 		self.phantom = webdriver.PhantomJS()
 		self.phantom.set_window_size(1280, 1024)		
 
-		self.last_refresh = None
-
-	def get_standings(self):
-		b = BeautifulSoup(self.html)
+		self.last_refresh = None	
 
 	def process(self):
 		if self.last_refresh is None:
@@ -89,8 +86,6 @@ class YahooFantasyFootball(object):
 			else:
 				raise Exception('Submission control not found!')
 
-			self.phantom.save_screenshot('/Users/tomlee/Desktop/ffball.png')
-
 		self.last_refresh = time.time()
 		self.html = self.phantom.page_source
 	
@@ -112,17 +107,3 @@ if __name__ == '__main__':
 	y = YahooFantasyFootball(YAHOO_LEAGUE_URL)
 	y.refresh()	
 	y.process()
-
-	# print y.scores
-	
-	# for m in y.matchups:
-	# 	print m
-
-	# for s in y.standings:
-	# 	print s
-
-
-	# f = open('output.html', 'w')
-	# f.write(h)
-	# f.close()
-	# 	
