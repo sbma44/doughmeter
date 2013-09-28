@@ -1,6 +1,7 @@
 from settings import *
 import simple_crypto
 from selenium import webdriver
+from selenium.webdriver.common.desired_capabilities import DesiredCapabilities
 import cookielib
 from BeautifulSoup import BeautifulSoup
 from soupselect import select
@@ -12,7 +13,13 @@ class YahooFantasyFootball(object):
 		super(YahooFantasyFootball, self).__init__()
 		self.league_url = league_url
 
-		self.phantom = webdriver.PhantomJS()
+
+		dcap = dict(DesiredCapabilities.PHANTOMJS)
+		dcap["phantomjs.page.settings.userAgent"] = (
+		   	"Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/53 "
+			"(KHTML, like Gecko) Chrome/15.0.87"
+		)
+		self.phantom = webdriver.PhantomJS(desired_capabilities=dcap)
 		self.phantom.set_window_size(1280, 1024)		
 
 		self.last_refresh = None	
