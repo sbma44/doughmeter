@@ -38,7 +38,7 @@ class YahooFantasyFootball(object):
 		self.matchups = matchups
 
 		standings = []
-		cell_order = ('rank', 'name', 'record', 'points', 'streak', 'waiver', 'moves')
+		cell_order = ('rank', 'name', 'record', 'points', 'points_against', 'streak', 'waiver', 'moves')
 		for row in select(b, 'table#standingstable tbody tr'):
 			record = {}
 			for (i, cell) in enumerate(select(row, 'td')):
