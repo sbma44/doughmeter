@@ -114,6 +114,10 @@ class YahooFantasyFootball(object):
 
 		return int(self.scores[player]['score']) - int(self.scores[opponent]['score'])
 
+	def get_standing(self, player):
+		for s in self.standings:
+			if s.get('name')==player:
+				return int(s.get('rank', 12))
 
 if __name__ == '__main__':
 	y = YahooFantasyFootball(YAHOO_LEAGUE_URL)
