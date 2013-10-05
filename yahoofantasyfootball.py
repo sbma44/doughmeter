@@ -31,7 +31,7 @@ class YahooFantasyFootball(object):
 		scores = {}
 		matchups = []
 		b = BeautifulSoup(self.html)
-		for row in select(b, 'ul.Bdrbot li'):
+		for row in select(b, 'ul.List-rich li.Linkable'):
 			matchup = []
 			for player in select(row, 'div.Grid-h-mid'):
 				score = select(player, 'div.Fz-lg')[0].getText()
@@ -114,3 +114,5 @@ if __name__ == '__main__':
 	y = YahooFantasyFootball(YAHOO_LEAGUE_URL)
 	y.refresh()	
 	y.process()
+	print y.standings
+	print y.scores
