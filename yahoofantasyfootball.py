@@ -95,9 +95,9 @@ class YahooFantasyFootball(object):
 
 		# wait for the html to settle down before storing it
 		self.html = ''
-		while y.phantom.page_source != self.html:
+		while self.phantom.page_source != self.html:
 			time.sleep(5)
-			self.html = y.phantom.page_source
+			self.html = self.phantom.page_source
 
 		self.last_refresh = time.time()		
 	
