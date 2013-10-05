@@ -93,8 +93,13 @@ class YahooFantasyFootball(object):
 			else:
 				raise Exception('Submission control not found!')
 
-		self.last_refresh = time.time()
-		self.html = self.phantom.page_source
+		# wait for the html to settle down before storing it
+		self.html = ''
+		while y.phantom.page_source != self.html:
+			time.sleep(5)
+			self.html = y.phantom.page_source
+
+		self.last_refresh = time.time()		
 	
 
 	def get_score_differential(self, player):
