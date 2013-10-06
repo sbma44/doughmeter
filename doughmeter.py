@@ -6,17 +6,29 @@ import datetime
 import settings
 import sys
 
-def gametime():
-	d = datetime.datetime.now()
+def gametime(d=None):
+	if d is None:
+		d = datetime.datetime.now()
 	if d.weekday()==6: # Sunday
-		return (d.hour>13)
+		return (d.hour>=13)
 	elif d.weekday()==0: # Monday -- account for early morning hours!
 		return (d.hour<3) or (d.hour>18)
 	elif d.weekday()==3: # Thursday
 		return (d.hour>18)
 	elif d.weekday()==4: # Friday
 		return (d.hour<3)
+
+def calculate_sleep_delay():
+	if gametime():
+		return 60
+	else:
+		# will it be gametime in the next hour?
+		n = datetime.datetime.now()
+		for i in range(0,60):
+			if gametime(n + datetime.timedelta(minutes=i)):
+				return (i * 60)
 		
+		return 60 * 60
 
 def main():
 	c = None
@@ -75,14 +87,10 @@ def main():
 			else:
 				c[1].set(rank)
 
-		if gametime():
-			if DEBUG:
-				print 'Sleeping for 60 seconds...'
-			time.sleep(60) # check once a minute (plus processing overhead)
-		else:
-			if DEBUG:
-				print 'Sleeping for 1 hour...'
-			time.sleep(60 * 60 * 3) # check every hour
+		delay = calculate_sleep_delay()
+		if DEBUG:
+			print 'Sleeping for %d seconds...' % delay
+		time.sleep(delay)
 
 if __name__ == '__main__':
 	main()
