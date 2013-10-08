@@ -38,6 +38,10 @@ def note_error():
 		os.system("touch %s" % FAILURE_LOCKFILE)
 
 def main():
+
+	# kill some zombies
+	os.system('sudo killall phantomjs')
+
 	c = None
 	y = None
 
