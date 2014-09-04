@@ -1,8 +1,8 @@
 import zlib
 import struct
 import base64
+import os
 from Crypto.Cipher import AES
-import local_settings
 
 class CheckSumError(Exception):
     pass
@@ -17,7 +17,14 @@ def _lazysecret(secret, blocksize=32, padding='}'):
     return secret
 
 def get_secret():
-	return base64.standard_b64decode(local_settings.SECRET)
+    secret = os.environ['SIMPLECRYPTO_SECRET']
+    try:
+        import local_settings
+        secret = local_settings.SIMPLECRYPTO_SECRET
+    except:
+        pass
+
+	return base64.standard_b64decode(secret)
 
 def encrypt(plaintext, secret=None, lazy=True, checksum=True):
     """encrypt plaintext with secret
