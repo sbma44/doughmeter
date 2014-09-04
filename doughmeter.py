@@ -5,6 +5,7 @@ import time
 import datetime
 import settings
 import sys
+import os
 
 def gametime(d=None):
 	if d is None:
@@ -30,16 +31,29 @@ def calculate_sleep_delay():
 		
 		return 60 * 60
 
+def note_error():
+	FAILURE_LOCKFILE = '/home/pi/Devel/doughmeter/FAILURE_LOCKFILE'
+	if not os.path.exists(FAILURE_LOCKFILE):
+		os.system("echo 'Error running doughmeter. Please fix me.' | mail -s '[doughmeter] Error' thomas.j.lee@gmail.com'")
+		os.system("touch %s" % FAILURE_LOCKFILE)
+
 def main():
+
+	# kill some zombies
+	os.system('sudo killall phantomjs')
+
 	c = None
 	y = None
 
 	DEBUG = '--debug' in sys.argv	
+	USEPINS = not '--nopin' in sys.argv
 
 	if DEBUG:
 		print 'Initializing... (DEBUG)'
 	else:
 		print 'Initializing...'
+	
+	if USEPINS:
 		import calibrate
 		c = calibrate.load_calibrators()
 	
@@ -62,6 +76,7 @@ def main():
 			if DEBUG:
 				print 'Failed to extract score'
 			score = None
+			note_error()
 
 		try:
 			rank = y.get_standing(settings.TEAM_NAME)
@@ -69,11 +84,12 @@ def main():
 			if DEBUG:
 				print 'Failed to extract rank'
 			rank = None
+			note_error()
 
 		if score is not None:
 			if DEBUG:
 				print 'Score differential: %d' % (score)
-			else:
+			if USEPINS:
 				if score<0:
 					c[6].set(0)
 					c[5].set(abs(score))
@@ -84,7 +100,7 @@ def main():
 		if rank is not None:
 			if DEBUG:
 				print 'Rank: %d' % (rank)
-			else:
+			if USEPINS:
 				c[1].set(rank)
 
 		delay = calculate_sleep_delay()

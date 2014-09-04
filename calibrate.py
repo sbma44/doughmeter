@@ -1,6 +1,6 @@
 from pwm_calibrate import PWMCalibrator
 
-PIN_CALIBRATION_FILES = ((1, 'pin1_calibration.json'), (5, 'pin5_calibration.json'), (6, 'pin6_calibration.json'))
+PIN_CALIBRATION_FILES = ((1, '/home/pi/Devel/doughmeter/pin1_calibration.json'), (5, '/home/pi/Devel/doughmeter/pin5_calibration.json'), (6, '/home/pi/Devel/doughmeter/pin6_calibration.json'))
 
 def calibrate():
    for (pin, filename) in PIN_CALIBRATION_FILES:
