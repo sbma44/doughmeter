@@ -17,7 +17,7 @@ def _lazysecret(secret, blocksize=32, padding='}'):
     return secret
 
 def get_secret():
-    secret = os.environ['SIMPLECRYPTO_SECRET']
+    secret = os.environ.get('SIMPLECRYPTO_SECRET')
     try:
         import local_settings
         secret = local_settings.SIMPLECRYPTO_SECRET
