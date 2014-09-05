@@ -23,7 +23,7 @@ def get_secret():
         import local_settings
         secret = local_settings.SIMPLECRYPTO_SECRET    
     except Exception, e:
-        raise e
+        pass
 
     return base64.standard_b64decode(secret)
 
