@@ -70,11 +70,8 @@ def main():
 
     while True:
         if DEBUG and not TRAVIS:
-            print 'reloading HTML...'
-        y.refresh()
-        if DEBUG and not TRAVIS:
-            print 'reprocessing...'
-        y.process()
+            print 'reloading HTML & processing it...'
+        y.refresh()        
         if DEBUG and not TRAVIS:
             print y.scores
         
