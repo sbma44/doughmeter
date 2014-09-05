@@ -2,7 +2,7 @@ language: python
 python:
 - '2.7'
 install: pip install -r requirements.txt
-script: python yahoofantasyfootball.py
+script: python doughmeter.py
 env:
   global:
     secure: RYNMwNMGLWATQ88ERhS7KvRL+t+2j5FVulFymuuabDWOa7bb0o8E6d7Z+zznmogGlpX9yil16l9dUERbB3jNfdkIIkQzhVsp2+SfHvuSuTJ8kl456L+lHeokZ4yzBHcp0fmtvwm5H0AOxCebxgGraGdjkXEshZ2JdBTbmgiMn7Y=

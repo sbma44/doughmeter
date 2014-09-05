@@ -18,13 +18,14 @@ def _lazysecret(secret, blocksize=32, padding='}'):
 
 def get_secret():
     secret = os.environ.get('SIMPLECRYPTO_SECRET')
+    
     try:
         import local_settings
-        secret = local_settings.SIMPLECRYPTO_SECRET
-    except:
-        pass
+        secret = local_settings.SIMPLECRYPTO_SECRET    
+    except Exception, e:
+        raise e
 
-	return base64.standard_b64decode(secret)
+    return base64.standard_b64decode(secret)
 
 def encrypt(plaintext, secret=None, lazy=True, checksum=True):
     """encrypt plaintext with secret
@@ -72,3 +73,7 @@ def decrypt(ciphertext, secret=None, lazy=True, checksum=True):
             raise CheckSumError("checksum mismatch")
 
     return plaintext
+
+if __name__ == '__main__':
+    import doctest
+    doctest.testmod()    
