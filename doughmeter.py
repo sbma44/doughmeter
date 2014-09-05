@@ -124,7 +124,7 @@ def main():
 if __name__ == '__main__':    
     if TRAVIS:
         import doctest
-        doctest.testmod()
+        sys.exit(doctest.testmod()[0])
     else:
         main()
     
